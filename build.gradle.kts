@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.15.RELEASE"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
+	kotlin("plugin.allopen") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
 }
 
@@ -16,23 +17,38 @@ repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "2021.0.5"
+val springBootVersion = "2.7.5"
+val springCloudVersion = "2021.0.5"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+	runtimeOnly("com.mysql:mysql-connector-j:8.0.31")
+
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-mail:$springBootVersion")
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4")
+	implementation("net.jodah:expiringmap:0.5.10")
+
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-	runtimeOnly("com.mysql:mysql-connector-j")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
+	implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.5")
 }
 
 dependencyManagement {
 	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
 	}
+}
+
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
 }
 
 tasks.withType<KotlinCompile> {
