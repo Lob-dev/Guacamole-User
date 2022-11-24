@@ -53,7 +53,7 @@ class UserService(
     @Transactional
     fun approveAuthorize(userId: Long) {
         val targetUser = findById(userId)
-        targetUser.isAuthorized = true
+        targetUser.authorize()
     }
 
     @Transactional(readOnly = true)

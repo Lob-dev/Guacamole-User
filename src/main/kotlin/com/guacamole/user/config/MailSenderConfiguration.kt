@@ -11,7 +11,7 @@ import java.util.*
 class MailSenderConfiguration {
 
     @Bean
-    fun getJavaMailSender(mailSenderProperty: MailSenderProperty): JavaMailSender? {
+    protected fun javaMailSender(mailSenderProperty: MailSenderProperty): JavaMailSender {
         val mailSender = JavaMailSenderImpl()
         mailSender.host = mailSenderProperty.host
         mailSender.port = mailSenderProperty.port

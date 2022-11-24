@@ -30,7 +30,7 @@ data class UserRegistrationCommand(
         passwordExpireAt = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(ONE_MONTH),
         birthday = birthday,
         contactNumber = contactNumber,
-        userStatus = UserStatus.ACTIVE,
+        userStatus = UserStatus.NOT_AUTHORIZE,
     )
 
     companion object {

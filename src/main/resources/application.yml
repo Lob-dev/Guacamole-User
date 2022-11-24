@@ -5,12 +5,12 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ''
-    password: ''
+    username: 'eodend2@gmail.com'
+    password: 'gvulhaevpgsfkqym'
 
   datasource:
     url: jdbc:mysql://localhost:3306/guacamole_user?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
-    username: guacamole
+    username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 

@@ -1,8 +1,12 @@
 package com.guacamole.user.application
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.guacamole.user.common.TransactionHandler
 import com.guacamole.user.domain.authorize.AuthorizeCodeManager
-import com.guacamole.user.domain.mail.MailService
+import com.guacamole.user.domain.mail.outbox.model.AuthorizationMailProperty
+import com.guacamole.user.domain.mail.outbox.MailOutbox
+import com.guacamole.user.domain.mail.outbox.MailOutboxRelay
+import com.guacamole.user.domain.mail.outbox.model.MailType
 import com.guacamole.user.domain.user.core.UserService
 import com.guacamole.user.domain.user.core.model.UserType
 import org.springframework.stereotype.Service
@@ -11,8 +15,9 @@ import org.springframework.stereotype.Service
 class UserFacadeService(
     private val userService: UserService,
     private val authorizeCodeManager: AuthorizeCodeManager,
-    private val mailService: MailService,
+    private val mailOutboxRelay: MailOutboxRelay,
     private val transactionHandler: TransactionHandler,
+    private val objectMapper: ObjectMapper,
 ) {
 
     fun registration(command: UserRegistrationCommand) {
@@ -22,8 +27,13 @@ class UserFacadeService(
 
         transactionHandler.runInTransaction {
             val newUser = userService.registration(command)
-            val authorizeCode = authorizeCodeManager.publishAuthorizeCode(newUser.id!!)
-            mailService.sendAuthorizeEmail(command.email, newUser.id!!, authorizeCode)
+            val userId = newUser.id!!
+            val authorizeCode = authorizeCodeManager.publishAuthorizeCode(userId)
+
+            val property = objectMapper.writeValueAsString(
+                AuthorizationMailProperty(userId, command.email, authorizeCode)
+            )
+            mailOutboxRelay.publish(MailOutbox.create(property, MailType.AUTHORIZATION))
         }
     }
 
