@@ -30,7 +30,7 @@ class MailOutboxRelay(
         val publishAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
         transactionHandler.runInTransaction {
             val mailOutbox =
-                mailOutboxRepository.findByTransactionAtLessThanAndOutboxStatusAndMailType(
+                mailOutboxRepository.findFirstByTransactionAtLessThanAndOutboxStatusAndMailType(
                     publishAt,
                     OutboxStatus.CREATE,
                     MailType.AUTHORIZATION,
