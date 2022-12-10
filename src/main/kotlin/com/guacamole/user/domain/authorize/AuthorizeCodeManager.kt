@@ -13,7 +13,7 @@ class AuthorizeCodeManager {
         .expiration(THREE_MINUTE, TimeUnit.MINUTES)
         .build<Long, String>()
 
-    fun publishAuthorizeCode(userId: Long): String =
+    fun publish(userId: Long): String =
         AuthorizeCodeGenerator.generateAuthorizeCode()
             .apply { cachedAuthorizeCodes[userId] = this }
 

@@ -1,7 +1,9 @@
 package com.guacamole.user.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.guacamole.user.api.AccessTokenResponse
 import com.guacamole.user.common.TransactionHandler
+import com.guacamole.user.domain.authorize.AccessTokenManager
 import com.guacamole.user.domain.authorize.AuthorizeCodeManager
 import com.guacamole.user.domain.mail.outbox.model.AuthorizationMailProperty
 import com.guacamole.user.domain.mail.outbox.MailOutbox
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service
 class UserFacadeService(
     private val userService: UserService,
     private val authorizeCodeManager: AuthorizeCodeManager,
+    private val accessTokenManager: AccessTokenManager,
     private val mailOutboxRelay: MailOutboxRelay,
     private val transactionHandler: TransactionHandler,
     private val objectMapper: ObjectMapper,
@@ -28,7 +31,7 @@ class UserFacadeService(
         transactionHandler.runInTransaction {
             val newUser = userService.registration(command)
             val userId = newUser.id!!
-            val authorizeCode = authorizeCodeManager.publishAuthorizeCode(userId)
+            val authorizeCode = authorizeCodeManager.publish(userId)
 
             val property = objectMapper.writeValueAsString(
                 AuthorizationMailProperty(userId, command.email, authorizeCode)
@@ -37,7 +40,7 @@ class UserFacadeService(
         }
     }
 
-    fun approveAuthorize(
+    fun authorize(
         userId: Long,
         authCode: String
     ): Boolean {
@@ -45,10 +48,13 @@ class UserFacadeService(
             throw RuntimeException("Not Allowed Auth Code")
         }
 
-        userService.approveAuthorize(userId)
+        userService.authorize(userId)
         return true
     }
 
-    fun isAllowedUserDetails(email: String, password: String, userType: UserType): Boolean =
-        userService.isAllowedUserDetails(email, password)
+    fun login(email: String, password: String, userType: UserType): AccessTokenResponse {
+        val user = userService.login(email, password)
+        val accessToken = accessTokenManager.generate(user)
+        return AccessTokenResponse(accessToken.value, accessToken.expireAt)
+    }
 }

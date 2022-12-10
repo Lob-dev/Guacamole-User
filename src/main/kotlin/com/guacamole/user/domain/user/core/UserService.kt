@@ -51,7 +51,7 @@ class UserService(
         userRepository.existsByContactNumber(contactNumber)
 
     @Transactional
-    fun approveAuthorize(userId: Long) {
+    fun authorize(userId: Long) {
         val targetUser = findById(userId)
         targetUser.authorize()
     }
@@ -63,8 +63,11 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun isAllowedUserDetails(email: String, password: String): Boolean {
+    fun login(email: String, password: String): User {
         val targetUser = userRepository.findByEmail(email)
-        return targetUser.isMatchedPassword(password.sha256())
+        if (targetUser.isMatchedPassword(password.sha256())) {
+            throw RuntimeException("Not Found User.")
+        }
+        return targetUser
     }
 }

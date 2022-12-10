@@ -28,3 +28,8 @@ mail:
 logging:
   level:
     root: info
+
+access-token:
+  secret: ABCDEFG123456
+  issuer: guacamole-user
+  expire-at-by-seconds: 3600

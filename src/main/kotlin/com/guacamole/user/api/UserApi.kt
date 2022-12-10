@@ -17,9 +17,9 @@ class UserApi(
 
     @GetMapping("/authorize")
     fun approveAuthorize(@RequestParam userId: Long, @RequestParam authCode: String): Boolean =
-        userFacadeService.approveAuthorize(userId, authCode)
+        userFacadeService.authorize(userId, authCode)
 
     @PostMapping("/login")
-    fun approveLogin(@RequestBody @Valid request: UserApproveLoginRequest): Boolean =
-        userFacadeService.isAllowedUserDetails(request.email, request.password, request.userType)
+    fun login(@RequestBody @Valid request: UserLoginRequest): AccessTokenResponse =
+        userFacadeService.login(request.email, request.password, request.userType)
 }
