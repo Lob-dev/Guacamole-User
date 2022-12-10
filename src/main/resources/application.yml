@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 'eodend2@gmail.com'
+    password: 'gvulhaevpgsfkqym'
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/guacamole_user?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      show-sql: true
+      format_sql: true
+    open-in-view: false
+
+mail:
+  auth-url-template: http://localhost:8080/api/users/authorize?userId=%d&authCode=%s
+
+logging:
+  level:
+    root: info

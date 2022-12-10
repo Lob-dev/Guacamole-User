@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: guacamole_user
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"

@@ -1,0 +1,37 @@
+
+### 회원 가입
+POST {{apiAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "lob",
+  "nickname": "lob",
+  "email": "eodend2@gmail.com",
+  "password": "abcD12#$",
+  "contactNumber": "010-0000-0000",
+  "birthday": "2022-11-20",
+  "userType": "CUSTOMER",
+  "privacy": {
+    "ci": "ci"
+  },
+  "terms": [
+    {
+      "termsType": "SERVICE",
+      "isAgree": true
+    }
+  ]
+}
+
+
+### 인증 링크 검증
+GET {{apiAddress}}/api/users/authorize?userId=1&authCode=ze4eaoc4u1
+
+
+### 로그인 가능 여부 확인
+POST {{apiAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "eodend2@gmail.com",
+  "password": "abcD12#$"
+}
