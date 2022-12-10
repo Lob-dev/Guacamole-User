@@ -5,9 +5,9 @@ import com.guacamole.user.api.AccessTokenResponse
 import com.guacamole.user.common.TransactionHandler
 import com.guacamole.user.domain.authorize.AccessTokenManager
 import com.guacamole.user.domain.authorize.AuthorizeCodeManager
-import com.guacamole.user.domain.mail.outbox.model.AuthorizationMailProperty
 import com.guacamole.user.domain.mail.outbox.MailOutbox
 import com.guacamole.user.domain.mail.outbox.MailOutboxRelay
+import com.guacamole.user.domain.mail.outbox.model.AuthorizationMailProperty
 import com.guacamole.user.domain.mail.outbox.model.MailType
 import com.guacamole.user.domain.user.core.UserService
 import com.guacamole.user.domain.user.core.model.UserType

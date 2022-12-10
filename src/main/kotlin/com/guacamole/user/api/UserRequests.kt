@@ -1,7 +1,6 @@
 package com.guacamole.user.api
 
 import com.guacamole.user.application.UserRegistrationCommand
-import com.guacamole.user.domain.authorize.model.GrantType
 import com.guacamole.user.domain.user.core.model.UserType
 import com.guacamole.user.domain.user.privacy.model.PrivacyDetail
 import com.guacamole.user.domain.user.terms.model.Terms

@@ -11,5 +11,5 @@ interface MailOutboxRepository : JpaRepository<MailOutbox, Long> {
         transactionAt: LocalDateTime,
         outboxStatus: OutboxStatus,
         mailType: MailType,
-    ) : MailOutbox?
+    ): MailOutbox?
 }
